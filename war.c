@@ -31,7 +31,12 @@
 
 // --- Função Principal (main) ---
 // Função principal que orquestra o fluxo do jogo, chamando as outras funções em ordem.
+#include <stdio.h>
+
 int main() {
+    printf("Desafio War!\n");
+
+
     // 1. Configuração Inicial (Setup):
     // - Define o locale para português.
     // - Inicializa a semente para geração de números aleatórios com base no tempo atual.
@@ -52,6 +57,7 @@ int main() {
     // - Ao final do jogo, libera a memória alocada para o mapa para evitar vazamentos de memória.
 
     return 0;
+    
 }
 
 // --- Implementação das Funções ---
