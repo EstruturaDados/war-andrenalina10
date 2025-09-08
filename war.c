@@ -18,9 +18,16 @@
 
 // --- Constantes Globais ---
 // Definem valores fixos para o número de territórios, missões e tamanho máximo de strings, facilitando a manutenção.
+#define MAX_NOME 30
+#define MAX_COR 10
 
 // --- Estrutura de Dados ---
-// Define a estrutura para um território, contendo seu nome, a cor do exército que o domina e o número de tropas.
+// Define a estrutura(STRUCT) para um território, contendo seu nome, a cor do exército que o domina e o número de tropas.
+struct Territorio{
+    char nome[MAX_NOME];
+    char cor[MAX_COR];
+    int tropas;
+}
 
 // --- Protótipos das Funções ---
 // Declarações antecipadas de todas as funções que serão usadas no programa, organizadas por categoria.
@@ -34,7 +41,37 @@
 #include <stdio.h>
 
 int main() {
-    printf("Desafio War!\n");
+    struct Territorio maximo[MAX_COR];
+    int totalterritorios = 0;
+    int opcao;
+
+
+    printf("============== Desafio War! ==============\n");
+
+    printf("Vamos cadastrar os 5 territorios iniciais do nosso mundo.");
+
+    printf("--- Cadastrando Território 1 ---");
+    printf("Nome do Território: ");
+    printf("Cor do Exercito: ");
+    printf("Numero de Tropas: ");
+    scanf("%d", )
+
+
+
+    if (totalterritorios == 0) {
+        printf("Nenhum territorio cadastrado ainda.\n");
+    }else{
+        for(int i = 0; i < totalterritorios; i++) {
+            printf("==================================\n");
+            printf("MAPA DO MUNDO ATUAL - ESTADO ATUAL\n");
+            printf("==================================\n");
+            printf("TERRITORIO %d\n", i +1 );
+            printf("Nome: %s\n", biblioteca[i].nome);
+            printf("Dominado por: Exercito %s\n", biblioteca[i].cor);
+            printf("Tropas: %d\n", biblioteca[i].tropas);
+        }
+        printf("-----------------------------------------\n");
+    }
 
 
     // 1. Configuração Inicial (Setup):
