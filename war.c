@@ -43,40 +43,56 @@ struct Territorio{
 #include <string.h>
 
 int main() {
-    struct Territorio T[MAX_COR];
+    struct Territorio T[MAX_TER];
     int totalterritorios = 0;
 
     // --- Laço Principal ---
-    do {
+
 
         printf("============== Desafio War! ==============\n\n");
-        printf("Vamos cadastrar os 5 territorios iniciais do nosso mundo.\n\n");
+        printf("Vamos cadastrar os 5 territórios iniciais do nosso mundo.\n\n");
 
-        if (totalterritorios < MAX_TER) {
-            printf("--- Cadastrando Território 1 ---");
+        while (totalterritorios < MAX_TER){
+        printf("--- Cadastrando Território %d ---\n", totalterritorios + 1);
+        
+        
             printf("Nome do Território: ");
             fgets(T[totalterritorios].nome, MAX_COR, stdin);
 
             printf("Cor do Exercito: ");
             fgets(T[totalterritorios].cor, MAX_COR, stdin);
 
-            T[totalterritorios].nome[strcspn(T[totalterritorios].nome, "\n")] =
-            T[totalterritorios].nome[strcspn(T[totalterritorios].nome, "\n")] =
+            T[totalterritorios].nome[strcspn(T[totalterritorios].nome, "\n")] = '\0';
+            T[totalterritorios].cor[strcspn(T[totalterritorios].cor, "\n")] ='\0';
             
             printf("Numero de Tropas: ");
             scanf("%d", &T[totalterritorios].tropas);
+            getchar();
 
             totalterritorios++;
-        } else {
-            printf("\nTerritorios cadastrados com sucesso!\n");
-        }          
+        }
+
+    printf ("\nCadastro inicial concluído com sucesso!!!\n");
+
+    printf("==================================\n");
+    printf("MAPA DO MUNDO ATUAL - ESTADO ATUAL\n");
+    printf("==================================\n");
 
 
 
-    } while;
+    for (int i = 0; i < MAX_TER; i++) {
+        printf("\n==============================");
+        printf("\nTERRITÓRIO %d", i + 1);
+        printf("\n- Nome: %s", T[i].nome);
+        printf("\n- Dominado por: Exército %s", T[i].cor);
+        printf("\n- Tropas: %d", T[i].tropas);
+        printf("\n==============================\n");
+    }
 
-    return 0
-} 
+
+    return 0;
+}
+
     // 1. Configuração Inicial (Setup):
     // - Define o locale para português.
     // - Inicializa a semente para geração de números aleatórios com base no tempo atual.
