@@ -44,80 +44,184 @@ struct Territorio{
 #include <string.h>
 #include <time.h>
 
+// Constantes para tamanhos máximos
+#define MAX_NOME 30
+#define MAX_COR 10
+
+// --- Estrutura de Dados ---
+// Define o modelo de um território com nome, cor (exército) e quantidade de tropas
+typedef struct {
+    char nome[MAX_NOME];
+    char cor[MAX_COR];
+    int tropas;
+} Territorio;
+
+// --- Protótipos das Funções ---
+// Declaração das funções utilizadas no código
+Territorio* cadastrarTerritorios(int total);
+void mostrarMapa(Territorio* mapa, int total);
+void atacar(Territorio* atacante, Territorio* defensor);
+void liberarMemoria(Territorio* mapa);
+
+// --- Função Principal ---
 int main() {
-    struct Territorio T[MAX_TER];
-    int totalterritorios = 0;
+    int totalTerritorios = 5; // Número fixo de territórios
+    srand(time(NULL));        // Inicializa a semente aleatória (dados diferentes a cada execução)
 
-    // --- Laço Principal ---
+    printf("============== Desafio War! ==============\n\n");
+    printf("Vamos cadastrar os 5 territórios iniciais do nosso mundo.\n\n");
 
+    // Aloca dinamicamente memória e cadastra os territórios
+    Territorio* mapa = cadastrarTerritorios(totalTerritorios);
 
-        printf("============== Desafio War! ==============\n\n");
-        printf("Vamos cadastrar os 5 territórios iniciais do nosso mundo.\n\n");
+    printf("\nCadastro inicial concluído com sucesso!!!\n");
 
-        while (totalterritorios < MAX_TER){
-        printf("--- Cadastrando Território %d ---\n", totalterritorios + 1);
-        
-        
-            printf("Nome do Território: ");
-            fgets(T[totalterritorios].nome, MAX_COR, stdin);
+    int opcaoAtacante = -1;
+    int opcaoDefensor = -1;
 
-            printf("Cor do Exercito: ");
-            fgets(T[totalterritorios].cor, MAX_COR, stdin);
+    // Loop de ataque, até o jogador digitar 0
+    do {
+        // Mostra o estado atual dos territórios
+        printf("\n==================================\n");
+        printf("MAPA DO MUNDO ATUAL - ESTADO ATUAL\n");
+        printf("==================================\n");
+        mostrarMapa(mapa, totalTerritorios);
 
-            T[totalterritorios].nome[strcspn(T[totalterritorios].nome, "\n")] = '\0';
-            T[totalterritorios].cor[strcspn(T[totalterritorios].cor, "\n")] ='\0';
-            
-            printf("Numero de Tropas: ");
-            scanf("%d", &T[totalterritorios].tropas);
-            getchar();
+        // Escolha do território atacante
+        printf("\nFase de ATAQUE\n");
+        printf("Escolha o território ATACANTE (1 a 5, ou 0 para sair): ");
+        scanf("%d", &opcaoAtacante);
+        getchar(); // limpa buffer do teclado
 
-            totalterritorios++;
+        if (opcaoAtacante == 0) {
+            break; // Encerra o loop se for 0
         }
 
-    printf ("\nCadastro inicial concluído com sucesso!!!\n");
+        // Verifica se o índice é válido
+        if (opcaoAtacante < 1 || opcaoAtacante > totalTerritorios) {
+            printf("Território inválido!\n");
+            continue;
+        }
 
-    printf("==================================\n");
-    printf("MAPA DO MUNDO ATUAL - ESTADO ATUAL\n");
-    printf("==================================\n");
+        // Escolha do território defensor
+        printf("Escolha o território DEFENSOR (1 a 5): ");
+        scanf("%d", &opcaoDefensor);
+        getchar();
 
+        // Verifica se o índice é válido
+        if (opcaoDefensor < 1 || opcaoDefensor > totalTerritorios) {
+            printf("Território inválido!\n");
+            continue;
+        }
 
+        // Obtém ponteiros para os territórios escolhidos
+        Territorio* atacante = &mapa[opcaoAtacante - 1];
+        Territorio* defensor = &mapa[opcaoDefensor - 1];
 
-    for (int i = 0; i < MAX_TER; i++) {
-        printf("%d. %s (Exército %s, Tropas: %d)\n", i + 1, T[i].nome, T[i].cor, T[i].tropas);
-    }
+        // Verifica se estão na mesma cor (não pode atacar aliados)
+        if (strcmp(atacante->cor, defensor->cor) == 0) {
+            printf("Erro: Não é possível atacar um território do mesmo exército!\n");
+            continue;
+        }
+
+        // Verifica se o atacante tem tropas
+        if (atacante->tropas < 1) {
+            printf("Erro: Território atacante não possui tropas suficientes!\n");
+            continue;
+        }
+
+        // Executa o ataque
+        atacar(atacante, defensor);
+
+    } while (1); // Repete até o jogador sair
+
+    liberarMemoria(mapa); // Libera memória alocada dinamicamente
+
+    printf("\nFim da simulação. Obrigado por jogar!\n");
+
     return 0;
-
-    printf("\n\n==============================");
-    printf("\nFASE DE ATAQUE");
-    printf("Escolha o território atacante (1 a 5, ou 0 para sair): ");
-    scanf();
-
-    printf("Escolha o território defensor (1 a 5): ");
-    scanf();
 }
 
-    // 1. Configuração Inicial (Setup):
-    // - Define o locale para português.
-    // - Inicializa a semente para geração de números aleatórios com base no tempo atual.
-    // - Aloca a memória para o mapa do mundo e verifica se a alocação foi bem-sucedida.
-    // - Preenche os territórios com seus dados iniciais (tropas, donos, etc.).
-    // - Define a cor do jogador e sorteia sua missão secreta.
+// --- Funções ---
 
-    // 2. Laço Principal do Jogo (Game Loop):
-    // - Roda em um loop 'do-while' que continua até o jogador sair (opção 0) ou vencer.
-    // - A cada iteração, exibe o mapa, a missão e o menu de ações.
-    // - Lê a escolha do jogador e usa um 'switch' para chamar a função apropriada:
-    //   - Opção 1: Inicia a fase de ataque.
-    //   - Opção 2: Verifica se a condição de vitória foi alcançada e informa o jogador.
-    //   - Opção 0: Encerra o jogo.
-    // - Pausa a execução para que o jogador possa ler os resultados antes da próxima rodada.
+// Cadastra os territórios com entrada do usuário
+Territorio* cadastrarTerritorios(int total) {
+    // Aloca memória para o vetor de territórios
+    Territorio* vetor = (Territorio*) malloc(total * sizeof(Territorio));
+    if (vetor == NULL) {
+        printf("Erro ao alocar memória!\n");
+        exit(1); // Encerra se falhar
+    }
 
-    // 3. Limpeza:
-    // - Ao final do jogo, libera a memória alocada para o mapa para evitar vazamentos de memória.
+    // Loop para cadastrar cada território
+    for (int i = 0; i < total; i++) {
+        printf("--- Cadastrando Território %d ---\n", i + 1);
 
-    //0;
-    
+        printf("Nome do Território: ");
+        fgets(vetor[i].nome, MAX_NOME, stdin);
+        vetor[i].nome[strcspn(vetor[i].nome, "\n")] = '\0'; // Remove o '\n'
 
+        printf("Cor do Exército: ");
+        fgets(vetor[i].cor, MAX_COR, stdin);
+        vetor[i].cor[strcspn(vetor[i].cor, "\n")] = '\0';
+
+        printf("Número de Tropas: ");
+        scanf("%d", &vetor[i].tropas);
+        getchar(); // limpa o \n do buffer
+    }
+
+    return vetor; // Retorna ponteiro para o vetor criado
+}
+
+// Mostra o estado atual de todos os territórios
+void mostrarMapa(Territorio* mapa, int total) {
+    for (int i = 0; i < total; i++) {
+        printf("%d. %s (Exército %s, Tropas: %d)\n", i + 1, mapa[i].nome, mapa[i].cor, mapa[i].tropas);
+    }
+}
+
+// Simula um ataque entre dois territórios
+void atacar(Territorio* atacante, Territorio* defensor) {
+    printf("\nIniciando batalha entre %s (cor %s) e %s (cor %s)...\n",
+           atacante->nome, atacante->cor, defensor->nome, defensor->cor);
+
+    // Gera valores aleatórios (dados de 1 a 6)
+    int dadoAtacante = (rand() % 6) + 1;
+    int dadoDefensor = (rand() % 6) + 1;
+
+    printf("Dado do atacante: %d\n", dadoAtacante);
+    printf("Dado do defensor: %d\n", dadoDefensor);
+
+    // Atacante venceu
+    if (dadoAtacante > dadoDefensor) {
+        printf("Vitória do atacante!\n");
+
+        // Transfere a cor para o defensor
+        strcpy(defensor->cor, atacante->cor);
+
+        // Calcula metade das tropas para transferir
+        int tropasTransferidas = atacante->tropas / 2;
+        if (tropasTransferidas == 0) tropasTransferidas = 1; // mínimo 1
+
+        // Atualiza tropas de ambos
+        defensor->tropas = tropasTransferidas;
+        atacante->tropas -= tropasTransferidas;
+
+        printf("O território %s agora pertence ao exército %s.\n", defensor->nome, defensor->cor);
+    } else {
+        // Defensor venceu
+        printf("Defesa bem-sucedida!\n");
+        atacante->tropas -= 1;
+        if (atacante->tropas < 0) atacante->tropas = 0;
+
+        printf("%s perdeu uma tropa e agora tem %d tropas.\n", atacante->nome, atacante->tropas);
+    }
+}
+
+// Libera a memória alocada para o vetor de territórios
+void liberarMemoria(Territorio* mapa) {
+    free(mapa);
+}
 
 // --- Implementação das Funções ---
 
