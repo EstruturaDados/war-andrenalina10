@@ -30,12 +30,6 @@ struct Territorio{
 };
 
 // Nova estrutura(STRUCT) para um território, contendo seu nome, a cor do exército que o domina e o número de tropas.
-struct Territorio{
-    char nome[MAX_COR];
-    char cor[MAX_COR];
-    int tropas;
-};
-
 // --- Protótipos das Funções ---
 // Declarações antecipadas de todas as funções que serão usadas no programa, organizadas por categoria.
 // Funções de setup e gerenciamento de memória:
@@ -89,18 +83,17 @@ int main() {
 
 
     for (int i = 0; i < MAX_TER; i++) {
-        printf("\n==============================");
-        printf("\n %d %s", i + 1, T[i].nome, "Exército %s", T[i].cor, "Tropas: %d", T[i].tropas );
+        printf("%d. %s (Exército %s, Tropas: %d)\n", i + 1, T[i].nome, T[i].cor, T[i].tropas);
     }
     return 0;
 
-    //printf("\n\n==============================");
-   // printf("\nFASE DE ATAQUE");
-    //printf("Escolha o território atacante (1 a 5, ou 0 para sair): ");
-    //scanf("%d", &T[totalterritorios].tropas);
+    printf("\n\n==============================");
+    printf("\nFASE DE ATAQUE");
+    printf("Escolha o território atacante (1 a 5, ou 0 para sair): ");
+    scanf();
 
-    //printf("Escolha o território defensor (1 a 5): ");
-    //scanf("%d", &T[totalterritorios].tropas);
+    printf("Escolha o território defensor (1 a 5): ");
+    scanf();
 }
 
     // 1. Configuração Inicial (Setup):
